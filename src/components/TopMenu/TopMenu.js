@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { logout } from '../Login/actionCreators';
 
-const TopMenu = ({ isAuthenticated }) => (
+const TopMenu = ({ isAuthenticated, userLogout }) => (
   <Menu secondary>
     <Menu.Item>
       <Link to="/">Home</Link>
     </Menu.Item>
-    {isAuthenticated ? (
+    {!isAuthenticated ? (
       <Menu.Menu position="right">
         <Menu.Item>
           <Link to="/login">Login</Link>
@@ -20,20 +21,20 @@ const TopMenu = ({ isAuthenticated }) => (
       </Menu.Menu>
     ) : (
       <Menu.Menu position="right">
-        <Menu.Item>
-          <Link to="/login">Logout</Link>
-        </Menu.Item>
+        <Menu.Item name="logout" onClick={userLogout} />
       </Menu.Menu>
     )}
   </Menu>
 );
 
 TopMenu.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired
+  isAuthenticated: PropTypes.bool.isRequired,
+  userLogout: PropTypes.func.isRequired
 };
 
 const mapStateToProps = ({ user: { isAuthenticated } }) => ({
   isAuthenticated
 });
 
-export default connect(mapStateToProps)(TopMenu);
+const mapDispatchToProps = { userLogout: logout };
+export default connect(mapStateToProps, mapDispatchToProps)(TopMenu);

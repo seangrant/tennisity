@@ -16,6 +16,7 @@ export const userLoggedOut = () => ({
   type: USER_LOGGED_OUT
 });
 
+export const logout = () => userLoggedOut();
 export const performLogin = ({ email, password }) => {
   const userPool = new CognitoUserPool({
     UserPoolId: config.cognito.USER_POOL_ID,
@@ -34,6 +35,5 @@ export const performLogin = ({ email, password }) => {
 
 export const login = credentials => dispatch =>
   performLogin(credentials).then(user => {
-    console.log({ user });
     dispatch(userLoggedIn(user));
   });
