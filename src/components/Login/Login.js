@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import LoginForm from './LoginForm/LoginForm';
+import { login } from './actionCreators';
 
 class LoginPage extends Component {
-  static propTypes = {};
-  onSubmit = () => {};
+  static propTypes = {
+    login: PropTypes.func.isRequired
+  };
+  onSubmit = credentials => {
+    this.props.login(credentials);
+  };
 
   onLogout = () => {};
   render() {
@@ -17,4 +23,4 @@ class LoginPage extends Component {
   }
 }
 
-export default LoginPage;
+export default connect(null, { login })(LoginPage);

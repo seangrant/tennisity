@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Form, Button, Message } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import validator from 'validator';
 import InlineError from '../../Messages/InlineError';
 
 class LoginForm extends Component {
   static propTypes = {
-    // onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool.isRequired
   };
 
   state = {
@@ -27,6 +30,9 @@ class LoginForm extends Component {
     const { data } = this.state;
     const errors = this.validate(data);
     this.setState({ errors });
+    if (Object.keys(errors).length === 0) {
+      this.props.onSubmit(data);
+    }
   };
 
   validate = data => {
@@ -38,6 +44,12 @@ class LoginForm extends Component {
 
   render() {
     const { data, errors, loading } = this.state;
+    const { isAuthenticated } = this.props;
+
+    if (isAuthenticated) {
+      return <Redirect to={'/'} />;
+    }
+
     return (
       <Form noValidate loading={loading}>
         {errors &&
@@ -77,4 +89,7 @@ class LoginForm extends Component {
     );
   }
 }
-export default LoginForm;
+const mapStateToProps = ({ user: { isAuthenticated } }) => ({
+    isAuthenticated
+  });
+export default connect(mapStateToProps)(LoginForm);
