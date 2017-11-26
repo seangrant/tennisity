@@ -7,9 +7,8 @@ import {
 import config from '../../config';
 import { USER_LOGIN_SUCCESS, USER_LOGGED_OUT } from './reducer';
 
-export const userLoggedIn = user => ({
-  type: USER_LOGIN_SUCCESS,
-  payload: user
+export const userLoggedIn = () => ({
+  type: USER_LOGIN_SUCCESS
 });
 
 export const userLoggedOut = () => ({

@@ -6,11 +6,9 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case USER_LOGIN_SUCCESS: {
-      const { accessToken } = action.payload;
-
       return {
         ...state,
-        isAuthenticated: Boolean(accessToken)
+        isAuthenticated: true
       };
     }
     case USER_LOGGED_OUT:

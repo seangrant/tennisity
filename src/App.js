@@ -1,12 +1,33 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Routes from './components/Routes/Routes';
 import TopMenu from './components/TopMenu/TopMenu';
+import { userLoggedIn } from './components/Login/actionCreators';
 
-const App = () => (
-  <div className="ui container">
-    <TopMenu />
-    <Routes />
-  </div>
-);
+import { authUser } from './libs/awsUtils';
 
-export default App;
+class App extends Component {
+  static propTypes = {
+    login: PropTypes.func.isRequired
+  };
+  async componentDidMount() {
+    if (await authUser()) {
+      this.props.login();
+    }
+  }
+  render() {
+    return (
+      <div className="ui container">
+        <TopMenu />
+        <Routes />
+      </div>
+    );
+  }
+}
+
+const mapDispatchToProps = {
+  login: userLoggedIn
+};
+
+export default connect(null, mapDispatchToProps)(App);
