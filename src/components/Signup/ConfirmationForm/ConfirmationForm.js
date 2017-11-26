@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import { Form, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
-import validator from 'validator';
 import InlineError from '../../Messages/InlineError';
 
-class LoginForm extends Component {
+class SignupForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool.isRequired
@@ -14,8 +13,7 @@ class LoginForm extends Component {
 
   state = {
     data: {
-      email: '',
-      password: ''
+      confirmationCode: ''
     },
     loading: false,
     errors: {}
@@ -37,8 +35,9 @@ class LoginForm extends Component {
 
   validate = data => {
     const errors = {};
-    if (!validator.isEmail(data.email)) errors.email = 'Invalid email';
-    if (!data.password) errors.password = 'Password not set';
+
+    if (!data.confirmationCode) errors.password = 'Confirmation code not set';
+
     return errors;
   };
 
@@ -52,31 +51,20 @@ class LoginForm extends Component {
 
     return (
       <Form noValidate loading={loading}>
-        <Form.Field error={!!errors.email}>
-          <label htmlFor="email">Email</label>
+        <Form.Field error={!!errors.confirmationCode}>
+          <label htmlFor="confirmationCode">Confirmation Code</label>
           <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="example@example.com"
+            id="confirmationCode"
+            name="confirmationCode"
+            placeholder="123456"
             value={data.email}
             onChange={this.onChange}
           />
           {errors.email && <InlineError text={errors.email} />}
         </Form.Field>
-        <Form.Field error={!!errors.password}>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={data.password}
-            onChange={this.onChange}
-          />
-          {errors.password && <InlineError text={errors.password} />}
-        </Form.Field>
+
         <Button primary onClick={this.onSubmit}>
-          Login
+          Confirm
         </Button>
       </Form>
     );
@@ -85,4 +73,4 @@ class LoginForm extends Component {
 const mapStateToProps = ({ user: { isAuthenticated } }) => ({
   isAuthenticated
 });
-export default withRouter(connect(mapStateToProps)(LoginForm));
+export default withRouter(connect(mapStateToProps)(SignupForm));
