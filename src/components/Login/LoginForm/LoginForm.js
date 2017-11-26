@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button, Message } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import validator from 'validator';
 import InlineError from '../../Messages/InlineError';
 
@@ -90,6 +90,6 @@ class LoginForm extends Component {
   }
 }
 const mapStateToProps = ({ user: { isAuthenticated } }) => ({
-    isAuthenticated
-  });
-export default connect(mapStateToProps)(LoginForm);
+  isAuthenticated
+});
+export default withRouter(connect(mapStateToProps)(LoginForm));

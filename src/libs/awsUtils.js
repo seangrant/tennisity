@@ -27,3 +27,10 @@ export const authUser = async () => {
   await getUserToken(currentUser);
   return true;
 };
+
+export const signOutUser = () => {
+  const currentUser = getCurrentUser();
+  if (currentUser !== null) {
+    currentUser.signOut();
+  }
+};

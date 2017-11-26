@@ -3,7 +3,7 @@ import {
   AuthenticationDetails,
   CognitoUser
 } from 'amazon-cognito-identity-js';
-
+import { signOutUser } from '../../libs/awsUtils';
 import config from '../../config';
 import { USER_LOGIN_SUCCESS, USER_LOGGED_OUT } from './reducer';
 
@@ -15,7 +15,11 @@ export const userLoggedOut = () => ({
   type: USER_LOGGED_OUT
 });
 
-export const logout = () => userLoggedOut();
+export const logout = () => {
+  signOutUser();
+  return userLoggedOut();
+};
+
 export const performLogin = ({ email, password }) => {
   const userPool = new CognitoUserPool({
     UserPoolId: config.cognito.USER_POOL_ID,
