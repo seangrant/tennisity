@@ -3,14 +3,18 @@ import PropTypes from 'prop-types';
 import { Form, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
-import InlineError from '../../Messages/InlineError';
+import InlineError from '../../../Messages/InlineError';
 
-class SignupForm extends Component {
+class ConfirmationForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired
+    isAuthenticated: PropTypes.bool.isRequired,
+    user: PropTypes.object
   };
 
+  static defaultProps = {
+    user: null
+  };
   state = {
     data: {
       confirmationCode: ''
@@ -29,7 +33,8 @@ class SignupForm extends Component {
     const errors = this.validate(data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
-      this.props.onSubmit(data);
+      const { user } = this.props;
+      this.props.onSubmit(user, data.confirmationCode);
     }
   };
 
@@ -70,7 +75,8 @@ class SignupForm extends Component {
     );
   }
 }
-const mapStateToProps = ({ user: { isAuthenticated } }) => ({
-  isAuthenticated
+const mapStateToProps = ({ user: { isAuthenticated, user } }) => ({
+  isAuthenticated,
+  user
 });
-export default withRouter(connect(mapStateToProps)(SignupForm));
+export default withRouter(connect(mapStateToProps)(ConfirmationForm));

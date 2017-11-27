@@ -4,9 +4,9 @@ import { Form, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 import validator from 'validator';
-import InlineError from '../../Messages/InlineError';
+import InlineError from '../../../Messages/InlineError';
 
-class SignupForm extends Component {
+class LoginForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool.isRequired
@@ -15,8 +15,7 @@ class SignupForm extends Component {
   state = {
     data: {
       email: '',
-      password: '',
-      confirmPassword: ''
+      password: ''
     },
     loading: false,
     errors: {}
@@ -40,8 +39,6 @@ class SignupForm extends Component {
     const errors = {};
     if (!validator.isEmail(data.email)) errors.email = 'Invalid email';
     if (!data.password) errors.password = 'Password not set';
-    if (data.password !== data.confirmPassword)
-      errors.confirmPassword = 'Confirmation Password does not match';
     return errors;
   };
 
@@ -78,21 +75,8 @@ class SignupForm extends Component {
           />
           {errors.password && <InlineError text={errors.password} />}
         </Form.Field>
-        <Form.Field error={!!errors.confirmPassword}>
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={data.confirmPassword}
-            onChange={this.onChange}
-          />
-          {errors.confirmPassword && (
-            <InlineError text={errors.confirmPassword} />
-          )}
-        </Form.Field>
         <Button primary onClick={this.onSubmit}>
-          Sign up
+          Login
         </Button>
       </Form>
     );
@@ -101,4 +85,4 @@ class SignupForm extends Component {
 const mapStateToProps = ({ user: { isAuthenticated } }) => ({
   isAuthenticated
 });
-export default withRouter(connect(mapStateToProps)(SignupForm));
+export default withRouter(connect(mapStateToProps)(LoginForm));

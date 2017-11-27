@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import SignupForm from './SignupForm/SignupForm';
-import { signup } from './actionCreators';
+import LoginForm from './LoginForm/LoginForm';
+import { login } from '../actionCreators';
 
 class LoginPage extends Component {
   static propTypes = {
-    signupUser: PropTypes.func.isRequired
+    login: PropTypes.func.isRequired
   };
   onSubmit = credentials => {
-    this.props.signupUser(credentials);
+    this.props.login(credentials);
   };
 
   onLogout = () => {};
@@ -18,10 +18,10 @@ class LoginPage extends Component {
     return (
       <div>
         <h1>Login</h1>
-        <SignupForm onSubmit={this.onSubmit} />
+        <LoginForm onSubmit={this.onSubmit} onLogout={this.onLogout} />
       </div>
     );
   }
 }
 
-export default withRouter(connect(null, { signupUser: signup })(LoginPage));
+export default withRouter(connect(null, { login })(LoginPage));
