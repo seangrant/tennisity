@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import Routes from './components/Routes/Routes';
 import TopMenu from './components/TopMenu/TopMenu';
 
-import { userLoggedIn } from './components/Login/actionCreators';
+import { userLoggedIn } from './components/User/actionCreators';
 
 import { authUser } from './libs/awsUtils';
 

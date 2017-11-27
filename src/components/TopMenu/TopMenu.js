@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Menu } from 'semantic-ui-react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { logout } from '../Login/actionCreators';
+import { logout } from '../User/actionCreators';
 
 const TopMenu = ({ isAuthenticated, userLogout }) => (
   <Menu secondary>
