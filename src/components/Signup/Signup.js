@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import SignupForm from './SignupForm/SignupForm';
-// import { login } from './actionCreators';
+import { signup } from './actionCreators';
 
 class LoginPage extends Component {
-  // static propTypes = {
-  //   login: PropTypes.func.isRequired
-  // };
-  onSubmit = () => {
-    // this.props.login(credentials);
+  static propTypes = {
+    signupUser: PropTypes.func.isRequired
+  };
+  onSubmit = credentials => {
+    this.props.signupUser(credentials);
   };
 
   onLogout = () => {};
@@ -24,4 +24,4 @@ class LoginPage extends Component {
   }
 }
 
-export default withRouter(connect(null, {})(LoginPage));
+export default withRouter(connect(null, { signupUser: signup })(LoginPage));

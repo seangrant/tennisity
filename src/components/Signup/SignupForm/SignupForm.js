@@ -78,7 +78,7 @@ class SignupForm extends Component {
           />
           {errors.password && <InlineError text={errors.password} />}
         </Form.Field>
-        <Form.Field error={!!errors.password}>
+        <Form.Field error={!!errors.confirmPassword}>
           <label htmlFor="confirmPassword">Confirm Password</label>
           <input
             type="password"

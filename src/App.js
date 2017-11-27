@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Routes from './components/Routes/Routes';
 import TopMenu from './components/TopMenu/TopMenu';
+
 import { userLoggedIn } from './components/Login/actionCreators';
 
 import { authUser } from './libs/awsUtils';
@@ -30,4 +32,4 @@ const mapDispatchToProps = {
   login: userLoggedIn
 };
 
-export default connect(null, mapDispatchToProps)(App);
+export default withRouter(connect(null, mapDispatchToProps)(App));

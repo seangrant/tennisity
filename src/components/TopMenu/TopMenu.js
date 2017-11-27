@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Menu } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../Login/actionCreators';
 
@@ -37,4 +37,6 @@ const mapStateToProps = ({ user: { isAuthenticated } }) => ({
 });
 
 const mapDispatchToProps = { userLogout: logout };
-export default connect(mapStateToProps, mapDispatchToProps)(TopMenu);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(TopMenu)
+);
