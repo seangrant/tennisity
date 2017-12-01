@@ -9,7 +9,7 @@ class ConfirmationForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
-    user: PropTypes.object
+    isConfirmed: PropTypes.bool.isRequired
   };
 
   static defaultProps = {
@@ -33,8 +33,7 @@ class ConfirmationForm extends Component {
     const errors = this.validate(data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
-      const { user } = this.props;
-      this.props.onSubmit(user, data.confirmationCode);
+      this.props.onSubmit(data.confirmationCode);
     }
   };
 
@@ -48,12 +47,14 @@ class ConfirmationForm extends Component {
 
   render() {
     const { data, errors, loading } = this.state;
-    const { isAuthenticated } = this.props;
+    const { isAuthenticated, isConfirmed } = this.props;
 
     if (isAuthenticated) {
       return <Redirect to={'/'} />;
     }
-
+    if (isConfirmed) {
+      return <Redirect to={'/login'} />;
+    }
     return (
       <Form noValidate loading={loading}>
         <Form.Field error={!!errors.confirmationCode}>
@@ -75,8 +76,9 @@ class ConfirmationForm extends Component {
     );
   }
 }
-const mapStateToProps = ({ user: { isAuthenticated, user } }) => ({
+const mapStateToProps = ({ user: { isAuthenticated, user, isConfirmed } }) => ({
   isAuthenticated,
-  user
+  user,
+  isConfirmed
 });
 export default withRouter(connect(mapStateToProps)(ConfirmationForm));

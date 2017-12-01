@@ -94,24 +94,15 @@ export const signup = credentials => dispatch =>
     dispatch(userSignedUp(user));
   });
 
-export const performConfirm = (user, confirmationCode) =>
-  new Promise((resolve, reject) =>
-    user.confirmRegistration(confirmationCode, true, (err, result) => {
+export const confirm = confirmationCode => (dispatch, getState) => {
+  const { user: { user } } = getState();
+  return new Promise((resolve, reject) =>
+    user.confirmRegistration(confirmationCode, true, err => {
       if (err) {
         reject(err);
         return;
       }
-      resolve(result);
+      dispatch(userConfirmed(user));
     })
   );
-
-export const confirm = (user, code) => (dispatch, getState) => {
-  performConfirm(user, code).then(result => {
-    const state = getState();
-    console.log({ username: state.user.user.username }, { result });
-    authenticate(user, 'seandgrant@gmail.com', 'C4roline!').then(r => {
-      console.log({ auth: r });
-      dispatch(userConfirmed(r));
-    });
-  });
 };

@@ -3,7 +3,9 @@ export const USER_LOGGED_OUT = 'USER_LOGGED_OUT';
 export const USER_SIGNED_UP = 'USER_SIGNED_UP';
 export const USER_CONFIRMED = 'USER_CONFIRMED';
 const initialState = {
-  isAuthenticated: false
+  isAuthenticated: false,
+  isConfirmed: false,
+  requiresConfirmation: false
 };
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -22,13 +24,14 @@ const userReducer = (state = initialState, action) => {
     case USER_SIGNED_UP: {
       return {
         ...state,
-        user: action.payload
+        user: action.payload,
+        requiresConfirmation: true
       };
     }
     case USER_CONFIRMED: {
       return {
         ...state,
-        confirmed: action.payload
+        isConfirmed: true
       };
     }
     default:

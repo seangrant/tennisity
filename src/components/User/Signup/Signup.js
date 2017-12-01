@@ -9,7 +9,8 @@ import ConfirmationForm from './ConfirmationForm/ConfirmationForm';
 class LoginPage extends Component {
   static propTypes = {
     signupUser: PropTypes.func.isRequired,
-    confirmUser: PropTypes.func.isRequired
+    confirmUser: PropTypes.func.isRequired,
+    requiresConfirmation: PropTypes.bool.isRequired
   };
   onSubmitSignup = credentials => {
     this.props.signupUser(credentials);
@@ -22,13 +23,21 @@ class LoginPage extends Component {
     return (
       <div>
         <h1>Login</h1>
-        <SignupForm onSubmit={this.onSubmitSignup} />
-        <ConfirmationForm onSubmit={this.onSubmitConfirm} />
+        {!this.props.requiresConfirmation ? (
+          <SignupForm onSubmit={this.onSubmitSignup} />
+        ) : (
+          <ConfirmationForm onSubmit={this.onSubmitConfirm} />
+        )}
       </div>
     );
   }
 }
 
+const mapStateToProps = ({ user: { requiresConfirmation } }) => ({
+  requiresConfirmation
+});
 export default withRouter(
-  connect(null, { signupUser: signup, confirmUser: confirm })(LoginPage)
+  connect(mapStateToProps, { signupUser: signup, confirmUser: confirm })(
+    LoginPage
+  )
 );
