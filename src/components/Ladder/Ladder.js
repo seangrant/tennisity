@@ -3,8 +3,9 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
 const LadderQuery = gql`
-  query LadderQuery($category: String!, $ranking: Int!) {
+  query LadderQuery($category: Int!, $ranking: Int!) {
     teams(category: $category, ranking: $ranking) {
+      id
       name
       score
     }
@@ -13,7 +14,7 @@ const LadderQuery = gql`
 
 const Ladder = ({ data: { teams = [] } } = {}) => [
   teams.map(team => (
-    <div>
+    <div key={team.id}>
       {team.name} {team.score}
     </div>
   ))

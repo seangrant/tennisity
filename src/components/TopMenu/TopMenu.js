@@ -9,6 +9,7 @@ const TopMenu = ({ isAuthenticated, userLogout }) => (
   <Menu secondary>
     <Menu.Item>
       <Link to="/">Home</Link>
+      <Link to="/team/add">Add Team</Link>
     </Menu.Item>
     {!isAuthenticated ? (
       <Menu.Menu position="right">
