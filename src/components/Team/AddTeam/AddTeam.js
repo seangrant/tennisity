@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 
 import gql from 'graphql-tag';
 
+import { Card } from '../../StyleGuide';
+
 const formName = 'addTeamForm';
 const selector = formValueSelector(formName);
 
@@ -40,30 +42,31 @@ class SimpleForm extends Component {
     const { data: { allClubs = [] } } = this.props;
     console.log(allClubs);
     return (
-      // const { handleSubmit, pristine, reset, submitting } = props;
-      <Form>
-        <Form.Field>
-          <label htmlFor="teamName">Team Name</label>
-          <Field
-            id="club"
-            name="club"
-            component={this.renderSelect}
-            type="text"
-            placeholder="Club Name"
-            clubs={allClubs}
-          />
-        </Form.Field>
-        <Form.Field>
-          <label htmlFor="teamName">Club Name</label>
-          <Field
-            id="teamName"
-            name="teamName"
-            component="input"
-            type="text"
-            placeholder="Team Name"
-          />
-        </Form.Field>
-      </Form>
+      <Card>
+        <Form>
+          <Form.Field>
+            <label htmlFor="teamName">Team Name</label>
+            <Field
+              id="club"
+              name="club"
+              component={this.renderSelect}
+              type="text"
+              placeholder="Club Name"
+              clubs={allClubs}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label htmlFor="teamName">Club Name</label>
+            <Field
+              id="teamName"
+              name="teamName"
+              component="input"
+              type="text"
+              placeholder="Team Name"
+            />
+          </Form.Field>
+        </Form>
+      </Card>
     );
   }
 }

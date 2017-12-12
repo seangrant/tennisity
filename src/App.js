@@ -6,6 +6,7 @@ import Routes from './components/Routes/Routes';
 import TopMenu from './components/TopMenu/TopMenu';
 
 import { userLoggedIn } from './components/User/actionCreators';
+import { AppContainer, PageBlock } from './components/StyleGuide';
 
 import { authUser } from './libs/awsUtils';
 
@@ -20,10 +21,14 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="ui container">
-        <TopMenu />
-        <Routes />
-      </div>
+      <AppContainer>
+        <div className="ui">
+          <PageBlock>
+            <TopMenu />
+            <Routes />
+          </PageBlock>
+        </div>
+      </AppContainer>
     );
   }
 }
