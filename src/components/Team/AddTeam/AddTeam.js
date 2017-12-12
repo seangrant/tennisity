@@ -1,8 +1,9 @@
 import React from 'react';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
-import { Form } from 'semantic-ui-react';
+import { Form, Dropdown } from 'semantic-ui-react';
 import Select from 'react-select';
 import { graphql } from 'react-apollo';
+import { connect } from 'react-redux';
 
 import gql from 'graphql-tag';
 
@@ -18,15 +19,21 @@ const ClubQuery = gql`
   }
 `;
 
-const renderSelect = ({ input, name }) => (
-  <Select
-    name={name}
-    options={[{ value: 'one', label: 'One' }, { value: 'two', label: 'Two' }]}
-    onChange={input.onChange}
-  />
-);
-const SimpleForm = ({ data } = {}) => {
-  console.log({ data });
+const renderSelect = st => {
+  const { input, name } = st;
+  console.log({ st });
+  return (
+    <Dropdown
+      {...input}
+      name={name}
+      options={[{ value: 'one', label: 'One' }, { value: 'two', label: 'Two' }]}
+      onChange={input.onChange}
+    />
+  );
+};
+const SimpleForm = ({ data: { allClubs = [] } } = {}) => {
+  console.log({ allClubs });
+
   return (
     // const { handleSubmit, pristine, reset, submitting } = props;
     <Form>
@@ -53,11 +60,21 @@ const SimpleForm = ({ data } = {}) => {
     </Form>
   );
 };
+
+const mapStateToProps = (state, other) => {
+  const club = selector(state, 'club');
+  console.log({ state, other });
+  return {
+    club
+  };
+};
+
+const connector = connect(mapStateToProps);
 const graphConnector = graphql(ClubQuery, {
-  options: () => ({
+  options: state => ({
     variables: {
-      $limit: 6,
-      $startsWith: 'E'
+      limit: 32,
+      startsWith: selector(state, 'club') || ''
     }
   })
 });
@@ -65,4 +82,4 @@ const form = reduxForm({
   form: formName
 });
 
-export default graphConnector(form(SimpleForm));
+export default connector(graphConnector(form(SimpleForm)));
