@@ -24,14 +24,12 @@ class App extends Component {
   render() {
     return (
       <ThemeProvider theme={AppTheme}>
-        <div>
+        <AppContainer>
           <TopMenu />
-          <AppContainer>
-            <PageBlock>
-              <Routes />
-            </PageBlock>
-          </AppContainer>
-        </div>
+          <PageBlock>
+            <Routes />
+          </PageBlock>
+        </AppContainer>
       </ThemeProvider>
     );
   }

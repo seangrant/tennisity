@@ -58,7 +58,20 @@ export const Text = styled('span')(
           transform: 'none',
           'margin-bottom': 0
         }
-      : {}
+      : {},
+  ({ strong = false }) =>
+    strong
+      ? {
+          'font-weight': 'bold'
+        }
+      : {},
+  ({ theme, light }) => ({
+    color: light ? theme.colors.light : theme.colors.dark,
+    '*': {
+      color: light ? theme.colors.light : theme.colors.dark
+    }
+  }),
+  ({ color }) => (color ? { color } : {})
 );
 
 export const Secondary = styled(Text)(({ theme }) => ({
@@ -66,5 +79,5 @@ export const Secondary = styled(Text)(({ theme }) => ({
 }));
 
 export const Link = styled(Text)(({ theme }) => ({
-  color: theme.colors.link
+  color: `${theme.colors.light} !important`
 }));
