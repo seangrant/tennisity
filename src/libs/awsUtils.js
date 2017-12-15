@@ -7,7 +7,8 @@ const getUserToken = currentUser =>
       if (err) {
         reject(err);
       }
-      resolve(session.getIdToken().getJwtToken());
+      resolve('FFF');
+      // resolve(session.getIdToken().getJwtToken());
     });
   });
 

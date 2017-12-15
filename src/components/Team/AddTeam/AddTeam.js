@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
-import { Form, Dropdown } from 'semantic-ui-react';
-// import Select from 'react-select';
+import { Form } from 'semantic-ui-react';
+import Select from 'react-select';
 import { graphql } from 'react-apollo';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 
 import gql from 'graphql-tag';
 
@@ -19,26 +19,25 @@ const ClubQuery = gql`
   }
 `;
 
-class SimpleForm extends Component {
+class AddTeam extends Component {
   renderSelect = ({ input, clubs }) => {
     const options = clubs.map(club => ({
       value: club.code,
       label: club.name
     }));
-
+    console.log({ input });
+    const change = args => {
+      console.log({ args });
+      input.onChange(args);
+    };
     return (
-      <Dropdown
-        {...input}
-        name={input.name}
-        options={options}
-        onChange={input.onChange}
-      />
+      <Select value={input.value} options={options} onChange={input.onChange} />
     );
   };
 
   render() {
+    console.log({ props: this.props });
     const { data: { allClubs = [] } } = this.props;
-    console.log(allClubs);
     return (
       // const { handleSubmit, pristine, reset, submitting } = props;
       <Form>
@@ -63,20 +62,21 @@ class SimpleForm extends Component {
             placeholder="Team Name"
           />
         </Form.Field>
+        <Form.Field>
+          <label htmlFor="section">Requested Section</label>
+          <Field
+            id="section"
+            name="section"
+            component="input"
+            type="text"
+            placeholder="Select 1 - 10"
+          />
+        </Form.Field>
       </Form>
     );
   }
 }
 
-const mapStateToProps = (state, other) => {
-  const club = selector(state, 'club');
-  console.log({ state, other });
-  return {
-    club
-  };
-};
-
-const connector = connect(mapStateToProps);
 const graphConnector = graphql(ClubQuery, {
   options: state => ({
     variables: {
@@ -89,4 +89,4 @@ const form = reduxForm({
   form: formName
 });
 
-export default connector(graphConnector(form(SimpleForm)));
+export default graphConnector(form(AddTeam));
