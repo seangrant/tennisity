@@ -1,31 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Menu } from 'semantic-ui-react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link as RouterLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import styled from 'react-emotion';
+
+import { Row, PageBlock, border, Link } from '../StyleGuide';
 import { logout } from '../User/actionCreators';
 
+const Header = styled('div')(({ theme }) => ({
+  height: theme.row * 7,
+  'border-bottom': border({ color: theme.colors.secondary })
+}));
+
 const TopMenu = ({ isAuthenticated, userLogout }) => (
-  <Menu secondary>
-    <Menu.Item>
-      <Link to="/">Home</Link>
-      <Link to="/team/add">Add Team</Link>
-    </Menu.Item>
-    {!isAuthenticated ? (
-      <Menu.Menu position="right">
-        <Menu.Item>
-          <Link to="/login">Login</Link>
-        </Menu.Item>
-        <Menu.Item>
-          <Link to="/signup">Sign up</Link>
-        </Menu.Item>
-      </Menu.Menu>
-    ) : (
-      <Menu.Menu position="right">
-        <Menu.Item name="logout" onClick={userLogout} />
-      </Menu.Menu>
-    )}
-  </Menu>
+  <Header>
+    <PageBlock>
+      <Row align="center">
+        <Row>
+          <Link raw>
+            <RouterLink to="/">Home</RouterLink>
+          </Link>
+          <Link raw>
+            <RouterLink to="/team/add">Add Team</RouterLink>
+          </Link>
+        </Row>
+        {!isAuthenticated ? (
+          <Row>
+            <Link raw>
+              <RouterLink to="/login">Login</RouterLink>
+            </Link>
+            <Link raw>
+              <RouterLink to="/signup">Sign up</RouterLink>
+            </Link>
+          </Row>
+        ) : (
+          <Link raw onClick={userLogout}>
+            Logout
+          </Link>
+        )}
+      </Row>
+    </PageBlock>
+  </Header>
 );
 
 TopMenu.propTypes = {

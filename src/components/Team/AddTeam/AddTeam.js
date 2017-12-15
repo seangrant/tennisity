@@ -7,6 +7,8 @@ import { graphql } from 'react-apollo';
 
 import gql from 'graphql-tag';
 
+import { Card } from '../../StyleGuide';
+
 const formName = 'addTeamForm';
 const selector = formValueSelector(formName);
 
@@ -39,40 +41,31 @@ class AddTeam extends Component {
     console.log({ props: this.props });
     const { data: { allClubs = [] } } = this.props;
     return (
-      // const { handleSubmit, pristine, reset, submitting } = props;
-      <Form>
-        <Form.Field>
-          <label htmlFor="teamName">Team Name</label>
-          <Field
-            id="club"
-            name="club"
-            component={this.renderSelect}
-            type="text"
-            placeholder="Club Name"
-            clubs={allClubs}
-          />
-        </Form.Field>
-        <Form.Field>
-          <label htmlFor="teamName">Club Name</label>
-          <Field
-            id="teamName"
-            name="teamName"
-            component="input"
-            type="text"
-            placeholder="Team Name"
-          />
-        </Form.Field>
-        <Form.Field>
-          <label htmlFor="section">Requested Section</label>
-          <Field
-            id="section"
-            name="section"
-            component="input"
-            type="text"
-            placeholder="Select 1 - 10"
-          />
-        </Form.Field>
-      </Form>
+      <Card>
+        <Form>
+          <Form.Field>
+            <label htmlFor="teamName">Team Name</label>
+            <Field
+              id="club"
+              name="club"
+              component={this.renderSelect}
+              type="text"
+              placeholder="Club Name"
+              clubs={allClubs}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label htmlFor="teamName">Club Name</label>
+            <Field
+              id="teamName"
+              name="teamName"
+              component="input"
+              type="text"
+              placeholder="Team Name"
+            />
+          </Form.Field>
+        </Form>
+      </Card>
     );
   }
 }

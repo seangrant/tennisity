@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { ThemeProvider } from 'emotion-theming';
+
 import Routes from './components/Routes/Routes';
 import TopMenu from './components/TopMenu/TopMenu';
 
 import { userLoggedIn } from './components/User/actionCreators';
+import AppTheme, { AppContainer, PageBlock } from './components/StyleGuide';
 
 import { authUser } from './libs/awsUtils';
 
@@ -20,10 +23,16 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="ui container">
-        <TopMenu />
-        <Routes />
-      </div>
+      <ThemeProvider theme={AppTheme}>
+        <div>
+          <TopMenu />
+          <AppContainer>
+            <PageBlock>
+              <Routes />
+            </PageBlock>
+          </AppContainer>
+        </div>
+      </ThemeProvider>
     );
   }
 }
