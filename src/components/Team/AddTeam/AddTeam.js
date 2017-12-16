@@ -1,37 +1,30 @@
 import React, { Component } from 'react';
-import { Field, reduxForm, formValueSelector } from 'redux-form';
+import PropTypes from 'prop-types';
+import { Field, reduxForm } from 'redux-form';
 import { Form } from 'semantic-ui-react';
 import Select from 'react-select';
-import { graphql } from 'react-apollo';
-// import { connect } from 'react-redux';
-
-import gql from 'graphql-tag';
+import { graphql, compose } from 'react-apollo';
 
 import { Card } from '../../StyleGuide';
+import ClubQuery from './clubQuery';
+import TeamQuery from './teamQuery';
 
 const formName = 'addTeamForm';
-const selector = formValueSelector(formName);
-
-const ClubQuery = gql`
-  query ClubQuery($limit: Int!, $startsWith: String!) {
-    allClubs(limit: $limit, startsWith: $startsWith) {
-      name
-      code
-    }
-  }
-`;
+// const selector = formValueSelector(formName);
 
 class AddTeam extends Component {
+  static propTypes = {
+    clubs: PropTypes.shape({
+      allClubs: PropTypes.array
+    }).isRequired
+  };
+
   renderSelect = ({ input, clubs }) => {
     const options = clubs.map(club => ({
       value: club.code,
       label: club.name
     }));
-    console.log({ input });
-    const change = args => {
-      console.log({ args });
-      input.onChange(args);
-    };
+
     return (
       <Select value={input.value} options={options} onChange={input.onChange} />
     );
@@ -39,7 +32,9 @@ class AddTeam extends Component {
 
   render() {
     console.log({ props: this.props });
-    const { data: { allClubs = [] } } = this.props;
+    const { clubs: { allClubs = [] }, teams: { teams } } = this.props;
+
+    console.log({ allClubs, teams });
     return (
       <Card>
         <Form>
@@ -70,11 +65,13 @@ class AddTeam extends Component {
   }
 }
 
-const graphConnector = graphql(ClubQuery, {
-  options: state => ({
+const clubQuery = graphql(ClubQuery, { name: 'clubs' });
+
+const categoryTeamsQuery = graphql(TeamQuery, {
+  name: 'teams',
+  options: ({ match }) => ({
     variables: {
-      limit: 32,
-      startsWith: selector(state, 'club') || ''
+      category: match.params.category
     }
   })
 });
@@ -82,4 +79,4 @@ const form = reduxForm({
   form: formName
 });
 
-export default graphConnector(form(AddTeam));
+export default compose(clubQuery, categoryTeamsQuery, form)(AddTeam);
