@@ -4,42 +4,44 @@ import { Link as RouterLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styled from 'react-emotion';
 
-import { Row, PageBlock, border, Link } from '../StyleGuide';
+import { Row, PageBlock, Text, margin, border } from '../StyleGuide';
 import { logout } from '../User/actionCreators';
 
 const Header = styled('div')(({ theme }) => ({
-  height: theme.row * 7,
-  'border-bottom': border({ color: theme.colors.secondary })
+  height: theme.row * 45,
+  'background-color': theme.colors.darkPrimary,
+  margin: margin({ bottom: theme.row * -38 })
+}));
+
+const Menu = styled('div')(({ theme }) => ({
+  'border-bottom': border({ color: theme.colors.light })
 }));
 
 const TopMenu = ({ isAuthenticated, userLogout }) => (
   <Header>
-    <PageBlock>
-      <Row align="center">
-        <Row>
-          <Link raw>
-            <RouterLink to="/">Home</RouterLink>
-          </Link>
-          <Link raw>
-            <RouterLink to="/team/add">Add Team</RouterLink>
-          </Link>
+    <Menu>
+      <PageBlock>
+        <Row rows={8} align="center">
+          <Text type="subheading" light raw>
+            <RouterLink to="/">Tennisity </RouterLink>
+          </Text>
+          {!isAuthenticated ? (
+            <Row align="center">
+              <Text light raw>
+                <RouterLink to="/login">Login</RouterLink>
+              </Text>
+              <Text light raw>
+                <RouterLink to="/signup">Sign up</RouterLink>
+              </Text>
+            </Row>
+          ) : (
+            <Text light raw onClick={userLogout}>
+              Logout
+            </Text>
+          )}
         </Row>
-        {!isAuthenticated ? (
-          <Row>
-            <Link raw>
-              <RouterLink to="/login">Login</RouterLink>
-            </Link>
-            <Link raw>
-              <RouterLink to="/signup">Sign up</RouterLink>
-            </Link>
-          </Row>
-        ) : (
-          <Link raw onClick={userLogout}>
-            Logout
-          </Link>
-        )}
-      </Row>
-    </PageBlock>
+      </PageBlock>
+    </Menu>
   </Header>
 );
 

@@ -9,3 +9,4 @@ export const border = ({ size = 1, color, type = 'solid' }) =>
 
 export const margin = ({ top = 0, bottom = 0, left = 0, right = 0 }) =>
   `${top}px ${right}px ${bottom}px ${left}px`;
+

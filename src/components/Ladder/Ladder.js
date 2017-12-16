@@ -11,8 +11,9 @@ import {
   Secondary,
   Column,
   FlexItem,
-  border,
-  margin
+  Section,
+  margin,
+  border
 } from '../StyleGuide';
 
 const LadderQuery = gql`
@@ -30,30 +31,42 @@ const LadderQuery = gql`
 
 const Heading = withProps({ align: 'center' })(
   styled(Row)(({ theme }) => ({
-    'border-top': border({ color: theme.colors.secondary }),
-    'border-bottom': border({ color: theme.colors.secondary }),
     margin: margin({ top: theme.row * 2, bottom: theme.row * 3 })
   }))
 );
 
-const TableHeading = styled(Row)(({ theme }) => ({
-  'border-bottom': border({ color: theme.colors.secondary }),
+const TableHeading = withProps({ rows: 5 })(
+  styled(Row)(({ theme }) => ({
+    'margin-bottom': theme.row
+  }))
+);
+
+const TableRow = styled(Row)(({ theme }) => ({
   'margin-bottom': theme.row * 2
 }));
 
-const TableRow = styled(Row)(({ theme, endOfFinals = false }) => ({
-  'border-bottom': endOfFinals
-    ? border({ color: theme.colors.primary })
-    : 'none',
-  'margin-bottom': theme.row * 2
-}));
+const Position = withProps({
+  type: 'subheading',
+  centered: true,
+  raw: true
+})(
+  styled(Text)(({ theme }) => ({
+    border: border({ size: 2, color: theme.colors.primary }),
+    color: theme.colors.primary,
+    'border-radius': 22,
+    height: theme.row * 7,
+    width: theme.row * 7,
+    margin: 'auto',
+    display: 'flex',
+    'justify-content': 'center',
+    'align-items': 'center'
+  }))
+);
 
 const LadderRow = (team, index) => (
   <TableRow endOfFinals={index === 3} key={team.id}>
-    <FlexItem basis="80px">
-      <Secondary type="subheading" centered>
-        {index + 1}
-      </Secondary>
+    <FlexItem align="center" basis="130px">
+      <Position>{index + 1}</Position>
     </FlexItem>
     <FlexItem grow="1">
       <Column>
@@ -63,7 +76,7 @@ const LadderRow = (team, index) => (
         <Secondary>{team.club.name}</Secondary>
       </Column>
     </FlexItem>
-    <FlexItem basis="70px">
+    <FlexItem align="center" basis="70px">
       <Text type="subheading" centered>
         {team.score}
       </Text>
@@ -75,28 +88,36 @@ const LadderPage = ({ data: { teams = [] } } = {}) => (
   <div>
     <Heading>
       <Column>
-        <Text type="heading" margin={false}>
+        <Text type="heading" strong light margin={false}>
           Monday Ladies
         </Text>
-        <Secondary type="subheading">Section 4</Secondary>
+        <Text type="subheading" light>
+          Section 4
+        </Text>
       </Column>
-      <Text type="heading" raw>
+      <Text type="heading" light raw>
         Round 5
       </Text>
     </Heading>
     <Card>
-      <TableHeading>
-        <FlexItem basis="80px">
-          <Secondary centered>Rank</Secondary>
-        </FlexItem>
-        <FlexItem grow="1">
-          <Secondary>Team</Secondary>
-        </FlexItem>
-        <FlexItem basis="70px">
-          <Secondary centered>Points</Secondary>
-        </FlexItem>
-      </TableHeading>
-      {teams.map(LadderRow)}
+      <Section>
+        <TableHeading>
+          <FlexItem basis="130px">
+            <Secondary centered raw>
+              Rank
+            </Secondary>
+          </FlexItem>
+          <FlexItem grow="1">
+            <Secondary raw>Team</Secondary>
+          </FlexItem>
+          <FlexItem basis="70px">
+            <Secondary centered raw>
+              Points
+            </Secondary>
+          </FlexItem>
+        </TableHeading>
+        {teams.map(LadderRow)}
+      </Section>
     </Card>
   </div>
 );
