@@ -76,7 +76,7 @@ const LadderRow = (team, index) => (
         <Secondary>{team.club.name}</Secondary>
       </Column>
     </FlexItem>
-    <FlexItem align="center" basis="70px">
+    <FlexItem align="center" basis="100px">
       <Text type="subheading" centered>
         {team.score}
       </Text>
@@ -110,7 +110,7 @@ const LadderPage = ({ data: { teams = [] } } = {}) => (
           <FlexItem grow="1">
             <Secondary raw>Team</Secondary>
           </FlexItem>
-          <FlexItem basis="70px">
+          <FlexItem basis="100px">
             <Secondary centered raw>
               Points
             </Secondary>
