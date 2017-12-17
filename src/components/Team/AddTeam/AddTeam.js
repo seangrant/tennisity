@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { Form } from 'semantic-ui-react';
 import Select from 'react-select';
+import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 
 import { Card } from '../../StyleGuide';
 import ClubQuery from './clubQuery';
 import TeamQuery from './teamQuery';
 
+import PlayerList from './PlayerList/PlayerList';
+
 const formName = 'addTeamForm';
-// const selector = formValueSelector(formName);
+const selector = formValueSelector(formName);
 
 class AddTeam extends Component {
   static propTypes = {
@@ -32,12 +35,13 @@ class AddTeam extends Component {
   );
 
   render() {
-    console.log({ props: this.props });
+    console.log({ addTeamProps: this.props });
     const {
       clubs: { allClubs = [] },
-      teams: { teams = [], refetch }
+      teams: { teams = [] },
+      currentTeam
     } = this.props;
-
+    console.log({ currentTeam });
     const clubOptions = allClubs.map(club => ({
       value: club.code,
       label: club.name
@@ -47,7 +51,6 @@ class AddTeam extends Component {
       value: team.id,
       label: team.name
     }));
-
     return (
       <Card>
         <Form>
@@ -83,17 +86,7 @@ class AddTeam extends Component {
               options={teamOptions}
             />
           </Form.Field>
-          <Form.Field>
-            <button
-              onClick={() =>
-                refetch({
-                  category: 2
-                })
-              }
-            >
-              RE-do
-            </button>
-          </Form.Field>
+          <PlayerList teamId={currentTeam ? currentTeam.id : 0} />
         </Form>
       </Card>
     );
@@ -104,17 +97,19 @@ const clubQuery = graphql(ClubQuery, { name: 'clubs' });
 
 const categoryTeamsQuery = graphql(TeamQuery, {
   name: 'teams',
-  options: ({ match }) => {
-    console.log('refetch');
-    return {
-      variables: {
-        category: match.params.category
-      }
-    };
-  }
+  options: ({ match }) => ({
+    variables: {
+      category: match.params.category
+    }
+  })
 });
 const form = reduxForm({
   form: formName
 });
 
-export default compose(clubQuery, categoryTeamsQuery, form)(AddTeam);
+const mapStateToProps = state => ({
+  currentTeam: selector(state, 'teamName')
+});
+
+const connector = connect(mapStateToProps, null);
+export default compose(clubQuery, categoryTeamsQuery, connector, form)(AddTeam);
