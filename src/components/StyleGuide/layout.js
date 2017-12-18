@@ -18,12 +18,13 @@ export const PageBlock = styled('div')(
     })
 );
 
-export const Card = styled('div')({
-  'background-color': '#fff',
+export const Card = styled('div')(({ theme }) => ({
+  'background-color': theme.colors.white,
   'border-radius': 3,
   'box-shadow': '0px 2px 4px rgba(0,0,0,0.18)',
-  overflow: 'hidden'
-});
+  overflow: 'hidden',
+  position: 'relative'
+}));
 
 export const Section = styled('div')(({ theme }) => ({
   padding: theme.row * 2,

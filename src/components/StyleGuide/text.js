@@ -13,6 +13,10 @@ const textHierarchy = {
   heading: {
     size: 2.4,
     rows: 5
+  },
+  hero: {
+    size: 4.2,
+    rows: 6
   }
 };
 
