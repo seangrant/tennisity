@@ -55,28 +55,7 @@ class AddTeam extends Component {
       <Card>
         <Form>
           <Form.Field>
-            <label htmlFor="teamName">Team Name</label>
-            <Field
-              id="club"
-              name="club"
-              component={this.renderClubSelect}
-              type="text"
-              placeholder="Club Name"
-              options={clubOptions}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label htmlFor="clubName">Club Name</label>
-            <Field
-              id="clubName"
-              name="clubName"
-              component="input"
-              type="text"
-              placeholder="Team Name"
-            />
-          </Form.Field>
-          <Form.Field>
-            <label htmlFor="teamName">Team Name</label>
+            <label htmlFor="teamName">Team</label>
             <Field
               id="teamName"
               name="teamName"
@@ -86,7 +65,19 @@ class AddTeam extends Component {
               options={teamOptions}
             />
           </Form.Field>
-          <PlayerList teamId={currentTeam ? currentTeam.id : 0} />
+
+          <Form.Field>
+            <label htmlFor="teamName">Club</label>
+            <Field
+              id="club"
+              name="club"
+              component={this.renderClubSelect}
+              type="text"
+              placeholder="Club Name"
+              options={clubOptions}
+            />
+          </Form.Field>
+          <PlayerList teamId={currentTeam ? currentTeam.value : 1} />
         </Form>
       </Card>
     );
