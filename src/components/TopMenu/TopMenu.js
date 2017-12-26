@@ -8,7 +8,7 @@ import { Row, PageBlock, Text, margin, border } from '../StyleGuide';
 import { logout } from '../User/actionCreators';
 
 const Header = styled('div')(({ theme }) => ({
-  height: theme.row * 45,
+  height: theme.row * 47,
   'background-color': theme.colors.darkPrimary,
   margin: margin({ bottom: theme.row * -38 })
 }));

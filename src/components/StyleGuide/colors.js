@@ -7,5 +7,6 @@ export default {
   dark: '#1E131C',
   light: '#f7f4f4',
   background: '#f7f4f4',
-  link: '#06c'
+  link: '#06c',
+  white: '#fff'
 };
