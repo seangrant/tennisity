@@ -5,8 +5,9 @@ import PlayerListItem from './PlayerListItem/PlayerListItem';
 import PlayerQuery from './playerQuery';
 
 const PlayerList = props => {
-  const { players: { teamPlayers = [] }, teamId } = props;
-  console.log({ teamId });
+  const { players: { teamPlayers = [] }, teamId, fields } = props;
+
+  console.log({ teamPlayers, fields });
   return (
     <div>
       {teamPlayers.map((player, index) => (

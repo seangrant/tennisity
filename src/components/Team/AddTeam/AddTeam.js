@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm, formValueSelector } from 'redux-form';
+import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import { Form } from 'semantic-ui-react';
 import Select from 'react-select';
 import { connect } from 'react-redux';
@@ -9,7 +9,7 @@ import { graphql, compose } from 'react-apollo';
 import { Card } from '../../StyleGuide';
 import ClubQuery from './clubQuery';
 import TeamQuery from './teamQuery';
-
+import PlayerQuery from './playerQuery';
 import PlayerList from './PlayerList/PlayerList';
 
 const formName = 'addTeamForm';
@@ -34,14 +34,32 @@ class AddTeam extends Component {
     <Select value={input.value} options={options} onChange={input.onChange} />
   );
 
+  // renderPlayers = ({ fields, meta: { error = '' } }) => {
+  //   console.log({ fields });
+  //   return fields.map((player, index) => {
+  //     console.log(player);
+  //     return (
+  //       <ul>
+  //         <PlayerListItem key={index} player={player} />
+  //       </ul>
+  //     );
+  //   });
+  // };
+
+  submitForm = team => {
+    console.log({ team });
+    // this.props.submitExperiment(experiment);
+  };
+
   render() {
+    const { handleSubmit } = this.props;
     console.log({ addTeamProps: this.props });
     const {
       clubs: { allClubs = [] },
       teams: { teams = [] },
-      currentTeam
+      teamId
     } = this.props;
-    console.log({ currentTeam });
+    console.log({ teamId });
     const clubOptions = allClubs.map(club => ({
       value: club.code,
       label: club.name
@@ -53,7 +71,7 @@ class AddTeam extends Component {
     }));
     return (
       <Card>
-        <Form>
+        <Form onSubmit={handleSubmit(this.submitForm)}>
           <Form.Field>
             <label htmlFor="teamName">Team</label>
             <Field
@@ -77,7 +95,18 @@ class AddTeam extends Component {
               options={clubOptions}
             />
           </Form.Field>
-          <PlayerList teamId={currentTeam ? currentTeam.value : 1} />
+          <Form.Field>
+            <label htmlFor="name">Club</label>
+            <Field
+              id="name"
+              name="name"
+              component="input"
+              type="text"
+              placeholder="name"
+            />
+          </Form.Field>
+          <FieldArray name="players" component={PlayerList} teamId={teamId} />
+          <button type="submit">Add</button>
         </Form>
       </Card>
     );
@@ -94,13 +123,39 @@ const categoryTeamsQuery = graphql(TeamQuery, {
     }
   })
 });
+
+const playerQuery = graphql(PlayerQuery, {
+  name: 'players',
+  options: ({ teamId }) => ({
+    variables: {
+      teamId
+    },
+    skip: true
+  })
+});
+
 const form = reduxForm({
   form: formName
 });
 
-const mapStateToProps = state => ({
-  currentTeam: selector(state, 'teamName')
-});
+const mapStateToProps = state => {
+  const currentTeam = selector(state, 'teamName') || [];
+  const teamId = currentTeam.length ? currentTeam[0].Id : 0;
+  console.log({ currentTeam });
+  return {
+    teamId,
+    currentTeam,
+    initialValues: {
+      name: 'fred'
+    }
+  };
+};
 
 const connector = connect(mapStateToProps, null);
-export default compose(clubQuery, categoryTeamsQuery, connector, form)(AddTeam);
+export default compose(
+  clubQuery,
+  categoryTeamsQuery,
+  playerQuery,
+  connector,
+  form
+)(AddTeam);

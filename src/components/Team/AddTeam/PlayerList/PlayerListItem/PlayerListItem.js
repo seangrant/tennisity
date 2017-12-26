@@ -1,41 +1,35 @@
 import React from 'react';
 import styled from 'react-emotion';
-import withProps from 'recompose/withProps';
+import { Field } from 'redux-form';
 
-import {
-  Card,
-  Text,
-  Row,
-  Secondary,
-  Column,
-  FlexItem,
-  Section,
-  margin,
-  border
-} from '../../../../StyleGuide';
+import { Text, Row, Column, FlexItem } from '../../../../StyleGuide';
 
 const TableRow = styled(Row)(({ theme }) => ({
   'margin-bottom': theme.row * 2
 }));
 
 const PlayerListItem = ({ index, player }) => (
-    <TableRow key={player.id}>
-      <FlexItem grow="1">
-        <Text type="subheading" margin={false}>
-          {index === 0 ? 'Captain' : index + 1}
-        </Text>
-      </FlexItem>
-      <FlexItem grow="1">
-        <Column>
-          <Text type="subheading" margin={false}>
-            {player.name}
-          </Text>
-        </Column>
-      </FlexItem>
-      <FlexItem align="center" basis="70px">
-        <Text centered>{player.email}</Text>
-      </FlexItem>
-    </TableRow>
-  );
+  <TableRow key={index}>
+    <FlexItem grow="1">
+      <Text type="subheading" margin={false}>
+        {index === 0 ? 'Captain' : index + 1}
+      </Text>
+    </FlexItem>
+    <FlexItem grow="1">
+      <Column>
+        <input type="text" margin basis="70px" value={player.name} />
+      </Column>
+    </FlexItem>
+    <FlexItem>
+      <Field
+        type="text"
+        basis="70px"
+        margin={false}
+        value={player.email}
+        component="input"
+      />
+    </FlexItem>
+  </TableRow>
+);
 
 export default PlayerListItem;
