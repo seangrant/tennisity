@@ -4,17 +4,7 @@ import styled from 'react-emotion';
 import gql from 'graphql-tag';
 import withProps from 'recompose/withProps';
 
-import {
-  Card,
-  Text,
-  Row,
-  Secondary,
-  Column,
-  FlexItem,
-  Section,
-  margin,
-  border
-} from '../StyleGuide';
+import { Card, Text, Row, FlexItem, border } from '../StyleGuide';
 
 const ScheduleQuery = gql`
   query ScheduleQuery($id: Int!) {
@@ -75,7 +65,7 @@ const SchedulePage = ({ data: { team: { name, matches = [] } = {} } } = {}) => (
         {name}
       </Text>
     </Row>
-    {matches.map(match => (
+    {matches.map(() => (
       <Card>
         <Row rows={30}>
           <FlexItem basis="calc(50% - 1px)">Content</FlexItem>

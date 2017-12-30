@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import styled from 'react-emotion';
 import { Field } from 'redux-form';
 
@@ -11,25 +13,21 @@ const TableRow = styled(Row)(({ theme }) => ({
 const PlayerListItem = ({ index, player }) => (
   <TableRow key={index}>
     <FlexItem grow="1">
-      <Text type="subheading" margin={false}>
-        {index === 0 ? 'Captain' : index + 1}
-      </Text>
+      <Text type="subheading">{index === 0 ? 'Captain' : index + 1}</Text>
     </FlexItem>
     <FlexItem grow="1">
       <Column>
-        <input type="text" margin basis="70px" value={player.name} />
+        <Field name={`${player}.name`} basis="70px" component="input" />
       </Column>
     </FlexItem>
     <FlexItem>
-      <Field
-        type="text"
-        basis="70px"
-        margin={false}
-        value={player.email}
-        component="input"
-      />
+      <Field name={`${player}.email`} basis="70px" component="input" />
     </FlexItem>
   </TableRow>
 );
 
+PlayerListItem.propTypes = {
+  index: PropTypes.number.isRequired,
+  player: PropTypes.shape({}).isRequired
+};
 export default PlayerListItem;

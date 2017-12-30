@@ -9,7 +9,6 @@ import { graphql, compose } from 'react-apollo';
 import { Card } from '../../StyleGuide';
 import ClubQuery from './clubQuery';
 import TeamQuery from './teamQuery';
-import PlayerQuery from './playerQuery';
 import PlayerList from './PlayerList/PlayerList';
 
 const formName = 'addTeamForm';
@@ -23,32 +22,25 @@ class AddTeam extends Component {
     teams: PropTypes.shape({
       teams: PropTypes.array,
       refetch: PropTypes.func
-    }).isRequired
+    }).isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    teamId: PropTypes.string.isRequired
+  };
+
+  submitForm = team => {
+    console.log({ team });
   };
 
   renderClubSelect = ({ input, options }) => (
     <Select value={input.value} options={options} onChange={input.onChange} />
   );
 
-  renderTeamSelect = ({ input, options }) => (
-    <Select value={input.value} options={options} onChange={input.onChange} />
-  );
+  renderTeamSelect = ({ input, options }) => {
+    const change = evt => {
+      input.onChange(evt);
+    };
 
-  // renderPlayers = ({ fields, meta: { error = '' } }) => {
-  //   console.log({ fields });
-  //   return fields.map((player, index) => {
-  //     console.log(player);
-  //     return (
-  //       <ul>
-  //         <PlayerListItem key={index} player={player} />
-  //       </ul>
-  //     );
-  //   });
-  // };
-
-  submitForm = team => {
-    console.log({ team });
-    // this.props.submitExperiment(experiment);
+    return <Select value={input.value} options={options} onChange={change} />;
   };
 
   render() {
@@ -59,7 +51,6 @@ class AddTeam extends Component {
       teams: { teams = [] },
       teamId
     } = this.props;
-    console.log({ teamId });
     const clubOptions = allClubs.map(club => ({
       value: club.code,
       label: club.name
@@ -124,38 +115,18 @@ const categoryTeamsQuery = graphql(TeamQuery, {
   })
 });
 
-const playerQuery = graphql(PlayerQuery, {
-  name: 'players',
-  options: ({ teamId }) => ({
-    variables: {
-      teamId
-    },
-    skip: true
-  })
-});
-
 const form = reduxForm({
   form: formName
 });
 
 const mapStateToProps = state => {
-  const currentTeam = selector(state, 'teamName') || [];
-  const teamId = currentTeam.length ? currentTeam[0].Id : 0;
-  console.log({ currentTeam });
+  const currentTeam = selector(state, 'teamName') || { value: '0' };
+  const teamId = currentTeam.value;
   return {
     teamId,
-    currentTeam,
-    initialValues: {
-      name: 'fred'
-    }
+    currentTeam
   };
 };
 
 const connector = connect(mapStateToProps, null);
-export default compose(
-  clubQuery,
-  categoryTeamsQuery,
-  playerQuery,
-  connector,
-  form
-)(AddTeam);
+export default compose(clubQuery, categoryTeamsQuery, connector, form)(AddTeam);
